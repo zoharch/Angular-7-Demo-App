@@ -1,19 +1,17 @@
-"use strict";
+import { merge as webpackMerge } from "webpack-merge";
+import { AngularWebpackPlugin } from "@ngtools/webpack";
+import UglifyJsPlugin from "uglifyjs-webpack-plugin";
+import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
+import cssnano from "cssnano";
 
-const webpackMerge = require("webpack-merge");
-const ngw = require("@ngtools/webpack");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const cssnano = require("cssnano");
+import commonConfig from "./webpack.config.common.js";
+import { root } from "./helpers.js"; // Assuming helpers.js exports a function 'root'
 
-const commonConfig = require("./webpack.config.common");
-const helpers = require("./helpers");
-
-module.exports = webpackMerge(commonConfig, {
+export default webpackMerge(commonConfig, {
   mode: "production",
 
   output: {
-    path: helpers.root("dist"),
+    path: root("dist"),
     publicPath: "/",
     filename: "[hash].js",
     chunkFilename: "[id].[hash].chunk.js",
@@ -53,9 +51,9 @@ module.exports = webpackMerge(commonConfig, {
   },
 
   plugins: [
-    new ngw.AngularCompilerPlugin({
-      tsConfigPath: helpers.root("tsconfig.aot.json"),
-      entryModule: helpers.root("src", "app", "app.module#AppModule"),
+    new AngularWebpackPlugin({
+      tsConfigPath: root("tsconfig.aot.json"),
+      entryModule: root("src", "app", "app.module#AppModule"),
     }),
   ],
 });

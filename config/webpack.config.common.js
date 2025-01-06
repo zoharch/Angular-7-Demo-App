@@ -1,21 +1,17 @@
-"use strict";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { root } from "./helpers.js"; // Assuming helpers.js exports a function named 'root'
 
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const isDev = process.env.NODE_ENV !== "production";
 
-const helpers = require("./helpers");
-
-module.exports = {
+export default {
   entry: {
-    polyfills: helpers.root("src", "polyfills.ts"),
-    main: isDev
-      ? helpers.root("src", "main.ts")
-      : helpers.root("src", "main.aot.ts"),
+    polyfills: root("src", "polyfills.ts"),
+    main: isDev ? root("src", "main.ts") : root("src", "main.aot.ts"),
   },
 
   output: {
-    path: helpers.root("dist"),
+    path: root("dist"),
     filename: "[name].[contenthash].js",
     clean: true, // Built-in feature of Webpack 5 to clean the output directory
   },
@@ -37,7 +33,7 @@ module.exports = {
           { loader: "css-loader", options: { sourceMap: isDev } },
           { loader: "sass-loader", options: { sourceMap: isDev } },
         ],
-        include: helpers.root("src", "assets"),
+        include: root("src", "assets"),
       },
       {
         test: /\.(scss|sass)$/,
@@ -46,7 +42,7 @@ module.exports = {
           { loader: "css-loader", options: { sourceMap: isDev } },
           { loader: "sass-loader", options: { sourceMap: isDev } },
         ],
-        include: helpers.root("src", "app"),
+        include: root("src", "app"),
       },
       {
         test: /\.(png|jpg|gif|svg|woff|woff2|eot|ttf|otf)$/,
@@ -68,7 +64,7 @@ module.exports = {
 
   devServer: {
     static: {
-      directory: helpers.root("dist"),
+      directory: root("dist"),
     },
     compress: true,
     port: 4200,

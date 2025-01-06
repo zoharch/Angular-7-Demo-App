@@ -1,16 +1,13 @@
-/**
- * Created By : Sangwin Gawande (http://sangw.in)
- */
+import { HighlightStudentDirective } from "./highlight-student.directive";
+import { ElementRef } from "@angular/core";
 
-import { HighlightStudentDirective } from './highlight-student.directive';
+describe("HighlightStudentDirective", () => {
+  it("should create an instance", () => {
+    // Mock ElementRef
+    const el = {} as ElementRef; // You can mock ElementRef if you don't need to interact with it.
 
-describe('HighlightStudentDirective', () => {
-  it('should create an instance', () => {
-    const directive = new HighlightStudentDirective();
+    // Now pass the mocked ElementRef to the directive constructor
+    const directive = new HighlightStudentDirective(el);
     expect(directive).toBeTruthy();
   });
 });
-
-/**
- * Created By : Sangwin Gawande (http://sangw.in)
- */

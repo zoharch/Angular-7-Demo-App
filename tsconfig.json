@@ -5,14 +5,17 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "es2015",
+    "module": "es2015", // Change to es2015 for better support with Webpack 5
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es5",
+    "target": "es5", // Keep es5 if you're targeting older browsers, otherwise switch to es2015
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2018", "dom"]
+  },
+  "angularCompilerOptions": {
+    "entryModule": "src/app/app.module#AppModule" // Add this line for AOT compilation
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

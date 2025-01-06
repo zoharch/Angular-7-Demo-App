@@ -1,13 +1,8 @@
-"use strict";
+import path from "path";
+const _root = path.resolve(new URL(".", import.meta.url).pathname, "..");
 
-const path = require("path");
-
-const _root = path.resolve(__dirname, "..");
-
-function root(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-
-  return path.join.apply(path, [_root].concat(args));
+function root(...args) {
+  return path.join(_root, ...args);
 }
 
-exports.root = root;
+export { root };

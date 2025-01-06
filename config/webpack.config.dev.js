@@ -1,16 +1,16 @@
-"use strict";
+import { merge as webpackMerge } from "webpack-merge";
+import { AngularWebpackPlugin } from "@ngtools/webpack";
 
-const { merge } = require("webpack-merge");
-const commonConfig = require("./webpack.config.common");
-const helpers = require("./helpers");
+import commonConfig from "./webpack.config.common.js";
+import { root } from "./helpers.js";
 
-module.exports = merge(commonConfig, {
+export default webpackMerge(commonConfig, {
   mode: "development",
 
   devtool: "eval-cheap-module-source-map",
 
   output: {
-    path: helpers.root("dist"),
+    path: root("dist"),
     publicPath: "/",
     filename: "[name].bundle.js",
     chunkFilename: "[name].chunk.js",
@@ -26,12 +26,11 @@ module.exports = merge(commonConfig, {
         test: /\.ts$/,
         use: [
           {
-            loader: "ts-loader",
+            loader: "@ngtools/webpack", // Use AngularCompilerPlugin
             options: {
-              configFile: helpers.root("tsconfig.json"),
+              tsConfigPath: root("tsconfig.json"),
             },
           },
-          "angular2-template-loader", // Handles Angular templates and styles
         ],
         exclude: /node_modules/,
       },
@@ -46,19 +45,29 @@ module.exports = merge(commonConfig, {
           { loader: "css-loader", options: { sourceMap: true } },
           { loader: "sass-loader", options: { sourceMap: true } },
         ],
-        include: helpers.root("src", "app"),
+        include: root("src", "app"),
       },
     ],
   },
 
+  plugins: [
+    new AngularWebpackPlugin({
+      tsConfigPath: root("tsconfig.json"), // Path to your tsconfig.json
+      entryModule: root("src/app/app.module#AppModule"), // Entry module for AOT
+      sourceMap: true, // Enable source maps
+    }),
+  ],
+
   devServer: {
     historyApiFallback: true,
     static: {
-      directory: helpers.root("dist"),
+      directory: root("dist"),
     },
     compress: true,
     port: 4200,
-    stats: "minimal",
     open: true,
+    client: {
+      logging: "info", // Log level for the browser console
+    },
   },
 });

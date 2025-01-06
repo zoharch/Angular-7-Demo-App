@@ -1,0 +1,2 @@
+ts-loader
+    "build": "tsc --version && tsc --project /Users/zoharchiprut/Documents/angular/Angular-7-Demo-App/tsconfig.json",
